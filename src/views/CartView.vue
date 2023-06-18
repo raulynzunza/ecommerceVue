@@ -1,5 +1,5 @@
 <template>
-  <main class="w-[80%] h-full mx-auto mt-24 flex">
+  <main class="w-[80%] h-full mx-auto pt-32 flex">
     <section class="flex flex-col gap-4 w-[80%]">
       <div
         v-for="item in displayedProducts"
@@ -109,5 +109,3 @@ onMounted(() => {
 
 watch(arrayProducts, setProducts)
 </script>
-
-<style scoped></style>

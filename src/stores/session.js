@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useSessionStore = defineStore('session', () => {
-  const sessionFlag = ref(true)  
+  const sessionFlag = ref(false)  
   
   function changeFlagSession() {
     if(sessionFlag.value) {

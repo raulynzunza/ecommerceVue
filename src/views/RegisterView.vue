@@ -1,11 +1,17 @@
 <template>
-  <section class="container">
+  <section class="flex w-[50%] mx-auto my-0 h-[100vh] justify-center items-center">
     <form
       class="flex flex-col w-full text-center gap-2"
       @submit="onSubmit"
       @keypress.enter="onSubmit"
     >
-      <h1>Login to platform</h1>
+      <h1>Register to platform</h1>
+      <input
+        type="text"
+        placeholder="Name"
+        class="bg-transparent placeholder:text-gray-dark p-2 border rounded"
+        v-model="name"
+      />
       <input
         type="email"
         placeholder="email"
@@ -22,64 +28,45 @@
         Login
       </button>
       <div v-if="incorrectFlag" class="bg-red">
-        <p class="text-gray-light">Incorrect email / passwod</p>
+        <p class="text-gray-light">Email already in use</p>
       </div>
     </form>
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import router from '../router'
-import { useSessionStore } from '../stores/session.js'
-import axios from 'axios'
+import axios from "axios"
+import { ref } from "vue"
 
+import router from '../router'
+
+const name = ref(null)
 const email = ref(null)
 const password = ref(null)
 const incorrectFlag = ref(false)
-const pinia = useSessionStore()
+
 
 const onSubmit = async (e) => {
   e.preventDefault()
-
   const params = {
+    name: name.value,
     email: email.value,
     password: password.value
   }
 
-try {
   await axios({
-    url: 'http://localhost:8000/api/users/findUser',
-    method: 'get',
+    url: 'http://localhost:8000/api/users',
+    method: 'post',
     params: params
-  }).then(resp => {
-    // localStorage.setItem('session', true)    
-    localStorage.setItem('userName', resp.data.name)
-    localStorage.setItem('userEmail', resp.data.email)
-    localStorage.setItem('userId', resp.data.id)    
-    localStorage.setItem('session', true)
-    incorrectFlag.value = false
-    pinia.sessionFlag = localStorage.getItem('session')
-    router.push('/dashboard')
+  }).then(() => {
+    router.push('/login')
   })
   .catch(() => {
     incorrectFlag.value = true    
   })
-} catch (error) {
-  console.log(error)
 }
-  
-}
-
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  width: 50%;
-  margin: 0 auto;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-}
+
 </style>

@@ -1,7 +1,7 @@
-import image1 from '@/assets/prenda1.jpg'
-import image2 from '@/assets/main-picture2.jpg'
-import image3 from '@/assets/main-picture.jpg'
-import image4 from '@/assets/main-picture3.jpg'
+import image1 from '@/assets/prenda1.webp'
+import image2 from '@/assets/main-picture2.webp'
+import image3 from '@/assets/main-picture.webp'
+import image4 from '@/assets/main-picture3.webp'
 
 
 export const users = [

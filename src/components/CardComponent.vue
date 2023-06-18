@@ -1,7 +1,7 @@
 <template>
   <article class="w-[100%] mb-16">
     <div class="card overflow-hidden h-full">
-        <img :src="`${props.image.src}`" :alt="props.image.alt" class="w-full h-full object-cover hover:scale-105 cursor-pointer hover:ease-in-out duration-150">
+        <img loading="lazy" width="300" height="500" :src="`${props.image.src}`" :alt="props.image.alt" class="w-full h-full object-cover hover:scale-105 cursor-pointer hover:ease-in-out duration-150">
     </div>
     <section class="flex justify-between items-center">
       <div>      
