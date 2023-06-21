@@ -13,5 +13,9 @@ export const useCartStore = defineStore('cart', () => {
     products.value.push(newProduct)
   }
 
-  return { counterCart, changeCounterCart, products, changeProductsCart }
+  function countProductsCart() {
+    counterCart.value = products.value.length
+  }
+
+  return { counterCart, changeCounterCart, products, changeProductsCart, countProductsCart }
 })

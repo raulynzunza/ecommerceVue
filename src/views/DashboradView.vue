@@ -1,23 +1,35 @@
 <template>
-  <div class="w-[80%] pt-32 mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-3">    
-    <CardComponent v-for="item in mainPictures" :key="item.id" :image=item />   
-  </div>
+  <main class="flex justify-center items-center mt-10">
+    <Spinner v-if="charging" />
+    <div
+      v-else
+      class="w-[80%] h-full mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center items-center gap-3"
+    >
+      <CardComponent v-for="item in products" :key="item.id" :image="item" />
+    </div>
+  </main>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import CardComponent from '../components/CardComponent.vue'
-import { mainPictures } from '../mocks/index'
 import router from '../router'
+import Spinner from '../components/SpinnerComponent.vue'
+import axios from 'axios'
 
-onMounted(() => {
-  if(!localStorage.getItem('userId')){
+const products = ref([])
+const charging = ref(false)
+
+onMounted(async () => {
+  if (!localStorage.getItem('userId')) {
     router.push('/')
   }
+  charging.value = true
+  await axios.get('http://localhost:8000/api/products').then((resp) => {
+    charging.value = false
+    products.value = resp.data
+  })
 })
-
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useSessionStore = defineStore('session', () => {
   const sessionFlag = ref(false)  
+  const userName = ref('')
   
   function changeFlagSession() {
     if(sessionFlag.value) {
@@ -13,5 +14,6 @@ export const useSessionStore = defineStore('session', () => {
     }    
   }
 
-  return { sessionFlag, changeFlagSession }
+
+  return { sessionFlag, changeFlagSession, userName }
 })

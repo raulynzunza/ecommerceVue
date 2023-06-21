@@ -1,19 +1,22 @@
 <template>
-  <main class="w-[80%] h-full mx-auto pt-32 flex">
-    <section class="flex flex-col gap-4 w-[80%]">
+  <main
+    class="w-[80%] h-full mx-auto mt-10 flex sm:flex-col md:flex-col lg:flex-row xl:flex-row flex-wrap"
+  >
+    <section class="flex flex-col gap-4 w-[80%] h-[full">
       <div
         v-for="item in displayedProducts"
         :key="item.id"
-        class="w-full h-full flex items-center gap-3"
+        class="w-full h-[70%] flex items-center gap-3"
       >
-        <img :src="item.src" :alt="item.alt" class="w-[15%] h-full object-cover" />
+        <img :src="item.image" :alt="item.name" class="w-[15%] h-full object-cover" />
         <div class="flex flex-col">
           <h3 class="text-[1.7rem] font-extralight text-purple-hover">{{ item.prenda }}</h3>
-          <p class="text-[1rem]">{{ item.categoria }}</p>
-          <h4 class="text-[1.5rem] text-pink">${{ item.precio }}</h4>
+          <p class="text-[1rem]">{{ item.type }}</p>
+          <p class="text-[1rem]">{{ item.description }}</p>
+          <h4 class="text-[1.5rem] text-pink">${{ item.price }}</h4>
         </div>
       </div>
-      <div class="flex items-center justify-between border-t0 bg-white px-4 py-3 sm:px-6">
+      <div class="flex items-center justify-between border-t0 px-4 py-3 sm:px-6">
         <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
           <div></div>
           <div>
@@ -35,7 +38,7 @@
                 :key="pageNumber"
                 aria-current="page"
                 @click="page = pageNumber"
-                class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:bg-gray cursor-pointer rounded"
+                class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold text-black focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:bg-gray cursor-pointer rounded"
               >
                 {{ pageNumber }}
               </span>
@@ -54,9 +57,11 @@
       </div>
     </section>
     <section>
-      <div class="fixed">
-        <h2 class="text-[2rem] font-bold text-gray-dark">Total:</h2>
-        <h2 class="text-[2.3rem] font-extralight text-purple-hover">${{ total }}</h2>
+      <div class="flex sm:flex-row md:flex-col sm:justify-between">
+        <article class="flex sm:flex-row md:flex-col">
+          <h2 class="text-[2rem] font-bold text-gray-dark">Total:</h2>
+          <h2 class="text-[2.3rem] font-extralight text-purple-hover">${{ total }}</h2>
+        </article>
         <button class="bg-purple hover:bg-purple-hover hover:text-gray-light rounded p-3 w-20">
           Pay
         </button>
@@ -74,7 +79,7 @@ const cart = useCartStore()
 const total = ref(0)
 const arrayProducts = ref([])
 const page = ref(1)
-const perPage = ref(5)
+const perPage = ref(3)
 const pages = ref([])
 
 const chargeProducts = () => {
@@ -102,7 +107,7 @@ const displayedProducts = computed(() => {
 
 onMounted(() => {
   cart.products.map((product) => {
-    total.value = total.value + parseInt(product.precio)
+    total.value = total.value + parseInt(product.price)
   })
   chargeProducts()
 })

@@ -1,11 +1,11 @@
 <template>
-  <section class="container">
+  <section class="container flex flex-col">
     <form
-      class="flex flex-col w-full text-center gap-2"
+      class="flex flex-col w-full text-center gap-2 mb-10"
       @submit="onSubmit"
       @keypress.enter="onSubmit"
     >
-      <h1>Login to platform</h1>
+      <h1 class="title">Login to platform</h1>
       <input
         type="email"
         placeholder="email"
@@ -21,10 +21,9 @@
       <button class="bg-purple rounded p-1 hover:bg-purple-hover hover:text-gray-light">
         Login
       </button>
-      <div v-if="incorrectFlag" class="bg-red">
-        <p class="text-gray-light">Incorrect email / passwod</p>
-      </div>
+      <AlertWarningComponent v-if="incorrectFlag" info="Incorrect email or password!" />
     </form>
+    <SpinnerComponent v-if="chargingFlag" />
   </section>
 </template>
 
@@ -32,45 +31,60 @@
 import { ref } from 'vue'
 import router from '../router'
 import { useSessionStore } from '../stores/session.js'
+import { useApiStore } from '../stores/api.js'
 import axios from 'axios'
+import AlertWarningComponent from '../components/AlertWarningComponent.vue'
+import SpinnerComponent from '../components/SpinnerComponent.vue'
+import { useCartStore } from '../stores/cartShop'
 
 const email = ref(null)
 const password = ref(null)
 const incorrectFlag = ref(false)
+const chargingFlag = ref(false)
 const pinia = useSessionStore()
+const piniaApi = useApiStore()
+const piniaCart = useCartStore()
 
 const onSubmit = async (e) => {
   e.preventDefault()
-
+  chargingFlag.value = true
   const params = {
     email: email.value,
     password: password.value
   }
 
-try {
-  await axios({
-    url: 'http://localhost:8000/api/users/findUser',
-    method: 'get',
-    params: params
-  }).then(resp => {
-    // localStorage.setItem('session', true)    
-    localStorage.setItem('userName', resp.data.name)
-    localStorage.setItem('userEmail', resp.data.email)
-    localStorage.setItem('userId', resp.data.id)    
-    localStorage.setItem('session', true)
-    incorrectFlag.value = false
-    pinia.sessionFlag = localStorage.getItem('session')
-    router.push('/dashboard')
-  })
-  .catch(() => {
-    incorrectFlag.value = true    
-  })
-} catch (error) {
-  console.log(error)
+  try {
+    await axios({
+      url: piniaApi.url + '/users/findUser',
+      method: 'get',
+      params: params
+    })
+      .then(async (resp) => {
+        localStorage.setItem('session', true)
+        pinia.userName = resp.data.name
+        localStorage.setItem('userName', resp.data.name)
+        localStorage.setItem('userEmail', resp.data.email)
+        localStorage.setItem('userId', resp.data.id)
+        localStorage.setItem('session', true)
+        incorrectFlag.value = false
+        pinia.sessionFlag = localStorage.getItem('session')
+        chargingFlag.value = false
+        await axios
+          .get(piniaApi.url + '/cart/products/' + localStorage.getItem('userId'))
+          .then((resp) => {
+            piniaCart.products = resp.data
+            piniaCart.countProductsCart()
+          })
+        router.push('/dashboard')
+      })
+      .catch(() => {
+        chargingFlag.value = false
+        incorrectFlag.value = true
+      })
+  } catch (error) {
+    console.log(error)
+  }
 }
-  
-}
-
 </script>
 
 <style scoped>
