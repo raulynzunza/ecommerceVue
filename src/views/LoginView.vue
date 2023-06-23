@@ -1,29 +1,34 @@
 <template>
   <section class="container flex flex-col">
     <form
-      class="flex flex-col w-full text-center gap-2 mb-10"
+      class="flex flex-col w-2/3 text-center gap-2 mb-10 box-border px-24 py-14 bg-[#ececec] rounded-xl"
       @submit="onSubmit"
       @keypress.enter="onSubmit"
     >
-      <h1 class="title">Login to platform</h1>
+      <img src="../assets/logo.svg" alt="logo" class="w-[10rem] self-center" />
+      <h1 class="title text-lg font-bold">Login to triangle shop!</h1>
       <input
         type="email"
         placeholder="email"
-        class="bg-transparent placeholder:text-gray-dark p-2 border rounded"
+        class="bg-transparent placeholder:text-gray-dark p-2 my-5 border-b-2 border-pink focus:outline-none"
         v-model="email"
       />
       <input
         type="password"
         placeholder="password"
-        class="bg-transparent placeholder:text-gray-dark p-2 border rounded"
+        class="bg-transparent placeholder:text-gray-dark p-2 mb-4 border-b-2 border-pink focus:outline-none"
         v-model="password"
       />
-      <button class="bg-purple rounded p-1 hover:bg-purple-hover hover:text-gray-light">
+      <button class="h-10 bg-purple rounded p-1 hover:bg-purple-hover text-gray-light font-bold">
         Login
       </button>
+      <p class="my-3">
+        Don't have an accound?
+        <a href="/register" class="font-bold ml-2 text-pink">Create</a>
+      </p>
       <AlertWarningComponent v-if="incorrectFlag" info="Incorrect email or password!" />
+      <SpinnerComponent v-if="chargingFlag" class="self-center" />
     </form>
-    <SpinnerComponent v-if="chargingFlag" />
   </section>
 </template>
 

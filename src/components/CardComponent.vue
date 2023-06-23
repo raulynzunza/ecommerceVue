@@ -18,7 +18,7 @@
         <p class="text-md text-pink">${{ props.image.price }}</p>
       </div>
       <div>
-        <button class="text-gray-light bg-gray p-2 rounded hover:bg-gray-dark" @click="onClick">
+        <button class="text-gray-light bg-gray p-2 hover:bg-gray-dark" @click="onClick">
           <i class="fa-solid fa-cart-plus"></i>
           <span class="sr-only">Add to cart</span>
         </button>
