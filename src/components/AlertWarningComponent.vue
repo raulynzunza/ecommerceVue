@@ -18,9 +18,11 @@
     </svg>
     <span class="sr-only">Info</span>
     <div>
-      <span class="font-bold">Email or password is incorrect</span>
+      <span class="font-bold">{{ props.info }}</span>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps(['info'])
+</script>
