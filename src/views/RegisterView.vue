@@ -82,12 +82,14 @@ import AlertWarningComponent from '../components/AlertWarningComponent.vue'
 import SpinnerComponent from '../components/SpinnerComponent.vue'
 
 import router from '../router'
+import { useApiStore } from '../stores/api'
 
 const name = ref(null)
 const email = ref(null)
 const password = ref(null)
 const incorrectFlag = ref(false)
 const chargingFlag = ref(false)
+const piniaApi = useApiStore()
 
 const seePassword = () => {
   var tipo = document.getElementById('password')
@@ -108,9 +110,12 @@ const onSubmit = async (e) => {
   }
 
   await axios({
-    url: 'http://localhost:8000/api/users',
+    url: piniaApi.url + '/users',
     method: 'post',
-    params: params
+    params: params,
+    headers: {
+      Accept: 'application/json'
+    }
   })
     .then(() => {
       chargingFlag.value = false

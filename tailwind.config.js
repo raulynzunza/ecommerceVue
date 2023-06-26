@@ -45,7 +45,8 @@ module.exports = {
         gray: '#8492a6',
         'gray-light': '#d3dce6',
         transparent: 'transparent',
-        red: '#7d0909'
+        red: '#7d0909',
+        success: '#02651c'
       }
     }
   },

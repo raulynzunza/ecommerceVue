@@ -44,6 +44,7 @@
     <button type="submit" class="rounded-full bg-pink text-white font-bold mt-6 box-border p-3">
       Submit
     </button>
+    <AlertSuccessComponent info="Product added succesfully!" v-if="alertFlag" class="mt-3" />
   </form>
 </template>
 
@@ -52,6 +53,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 import { uploadFile } from '../firebase/config.js'
 import { useApiStore } from '../stores/api'
+import AlertSuccessComponent from '../components/AlertSuccessComponent.vue'
 
 const file = ref()
 const image = ref()
@@ -60,6 +62,7 @@ const name = ref()
 const description = ref()
 const price = ref()
 const type = ref()
+const alertFlag = ref()
 
 const onFileChange = (e) => {
   file.value = e.target.files[0]
@@ -75,8 +78,13 @@ const submitForm = async () => {
       type: type.value,
       image: image.value
     }
-    await axios.post(piniaApi.url + '/products', params).then((resp) => {
-      console.log(resp)
+    await axios.post(piniaApi.url + '/products', params).then(() => {
+      name.value = ''
+      description.value = ''
+      price.value = ''
+      type.value = ''
+      image.value = null
+      alertFlag.value = true
     })
   } catch (e) {
     console.log(e)
